@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.quiz.lesson02.bo.StoreBO;
 import com.quiz.lesson02.domain.Store;
 
-@RestController
+@RestController // @Controller + @ResponseBody
 public class Lesson02Quiz01RestController {
-	@Autowired
+	@Autowired // DI(의존성 주입)
 	private StoreBO storeBO;
 	
 	@RequestMapping("/lesson02/quiz01")
