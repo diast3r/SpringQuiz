@@ -20,7 +20,7 @@
 			`id` = #{id}
 	</select>
 	
-	<select id="selectRealEstateByRentPrice" parameterType="int" resultType="com.quiz.lesson03.domain.RealEstate">
+	<select id="selectRealEstateListByRentPrice" parameterType="int" resultType="com.quiz.lesson03.domain.RealEstate">
 		SELECT
 			`id`
 			,`realtorId`
@@ -40,7 +40,7 @@
 			]]>
 	</select>
 	
-	<select id="selectRealEstateByAreaAndPrice" parameterType="Map" resultType="com.quiz.lesson03.domain.RealEstate">
+	<select id="selectRealEstateListByAreaPrice" parameterType="map" resultType="com.quiz.lesson03.domain.RealEstate">
 		SELECT
 			`id`
 			,`realtorId`
@@ -54,14 +54,64 @@
 		FROM
 			`real_estate`
 		WHERE
+			<![CDATA[
 			`type` = '매매' and
-			<![CDATA[
-			`area` >= #{area}
-			]]> and
-			<![CDATA[
+			`area` >= #{area} and
 			`price` <= #{price}
 			]]>
 		ORDER BY
 			`createdAt` DESC
 	</select>
+	
+	<!-- 문제 2-1 -->
+	<insert id="insertRealEstate" parameterType="com.quiz.lesson03.domain.RealEstate">
+		INSERT INTO `real_estate`
+		(
+			`realtorId`
+			,`address`
+			,`area`
+			,`type`
+			,`price`
+			,`rentPrice`
+			,`createdAt`
+			,`updatedAt`
+		)
+		VALUES
+		(
+			#{realtorId}
+			,#{address}
+			,#{area}
+			,#{type}
+			,#{price}
+			,#{rentPrice}
+			,NOW()
+			,NOW()
+		)
+	</insert>
+	
+	<!-- 문제 2-2 -->
+	<insert id="insertRealEstateAsField" parameterType="map">
+		INSERT INTO `real_estate`
+		(
+			`realtorId`
+			,`address`
+			,`area`
+			,`type`
+			,`price`
+			,`rentPrice`
+			,`createdAt`
+			,`updatedAt`
+		)
+		VALUES
+		(
+			#{realtorId}
+			,#{address}
+			,#{area}
+			,#{type}
+			,#{price}
+			,#{rentPrice}
+			,NOW()
+			,NOW()
+		)
+	</insert>
 </mapper>

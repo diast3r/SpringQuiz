@@ -12,34 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 import com.quiz.lesson03.bo.RealEstateBO;
 import com.quiz.lesson03.domain.RealEstate;
 
-@RestController
-@RequestMapping("/lesson03/quiz01")
+@RestController // @ResponseBody
+@RequestMapping("/lesson03/quiz01") // /lesson03/quiz01
 public class Lesson03Quiz01RestController {
 	
 	@Autowired
 	private RealEstateBO realEstateBO;
 	
+	// /lesson03/quiz01/1?id=20
 	@RequestMapping("/1")
-	public RealEstate quiz01(
+	public RealEstate quiz01_1(
 			@RequestParam("id") int id) {
 		
 		return realEstateBO.getRealEstateById(id);
 	}
 	
+	// /lesson03/quiz01/2?rent_price=90
 	@RequestMapping("/2")
-	public List<RealEstate> quiz02(
-			@RequestParam("rentPrice") int rentPrice) {
+	public List<RealEstate> quiz01_2(
+			@RequestParam(value = "rent_price") int rentPrice) {
 		
 		return realEstateBO.getRealEstateByRentPrice(rentPrice);
 	}
 	
+	// /lesson03/quiz01/3?area=90&price=130000
 	@RequestMapping("/3")
-	public List<RealEstate> quiz03(
+	public List<RealEstate> quiz01_3(
 			@RequestParam("area") int area, @RequestParam("price") int price) {
-		Map<String, Object> parameterMap = new HashMap<>();
-		parameterMap.put("area", area);
-		parameterMap.put("price", price);
-		
-		return realEstateBO.getRealEstateByAreaAndPrice(parameterMap);
+		return realEstateBO.getRealEstateListByAreaPrice(area, price);
 	}
 }

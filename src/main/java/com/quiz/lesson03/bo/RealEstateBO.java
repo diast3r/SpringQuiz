@@ -1,8 +1,8 @@
 package com.quiz.lesson03.bo;
 
 import java.util.List;
-import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +19,22 @@ public class RealEstateBO {
 		return realEstateMapper.selectRealEstateById(id);
 	}
 	
+	// input: rentPrice
+	// output: List<RealEstate>
 	public List<RealEstate> getRealEstateByRentPrice(int rentPrice) {
-		return realEstateMapper.selectRealEstateByRentPrice(rentPrice);
+		return realEstateMapper.selectRealEstateListByRentPrice(rentPrice);
 	}
 	
-	public List<RealEstate> getRealEstateByAreaAndPrice(Map<String, Object> parameterMap) {
-		
-		return realEstateMapper.selectRealEstateByAreaAndPrice(parameterMap);
+	public List<RealEstate> getRealEstateListByAreaPrice(int area, int price) {
+		return realEstateMapper.selectRealEstateListByAreaPrice(area, price);
 	}
 	
+	public int addRealEstate(RealEstate realEstate) {
+		return realEstateMapper.insertRealEstate(realEstate);
+	}
+	
+	public int addRealEstateAsField(int realtorId, String address, 
+			int area, String type, int price, Integer rentPrice) {
+		return realEstateMapper.insertRealEstateAsField(realtorId, address ,area, type, price, rentPrice);
+	}
 }

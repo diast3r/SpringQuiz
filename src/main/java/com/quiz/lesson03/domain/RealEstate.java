@@ -49,10 +49,10 @@ public class RealEstate {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getRentPrice() {
+	public Integer getRentPrice() {
 		return rentPrice;
 	}
-	public void setRentPrice(int rentPrice) {
+	public void setRentPrice(Integer rentPrice) {
 		this.rentPrice = rentPrice;
 	}
 	public LocalDateTime getCreatedAt() {
