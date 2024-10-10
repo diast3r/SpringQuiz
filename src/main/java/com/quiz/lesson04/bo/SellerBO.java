@@ -8,19 +8,21 @@ import com.quiz.lesson04.mapper.SellerMapper;
 
 @Service
 public class SellerBO {
-	@Autowired
+	@Autowired // 의존성 주입.DI dependency injection
 	private SellerMapper sellerMapper;
 	
+	// 문제 1-1
 	public void addSeller(String nickname, String profileImageUrl, Double temperature) {
 		sellerMapper.insertSeller(nickname, profileImageUrl, temperature);
 	}
 	
-	public Seller getSeller() {
-		return sellerMapper.selectSeller();
+	// 문제 1-2. (1-3번 풀면 사용하지 않을 코드.)
+	public Seller getLatestSeller() {
+		return sellerMapper.selectLatestSeller();
 	}
 	
+	// 문제 1-3
 	public Seller getSellerById(int id) {
-		Seller seller = sellerMapper.selectSellerById(id);
-		return seller == null? sellerMapper.selectSellerById(1) : seller;
+		return sellerMapper.selectSellerById(id);
 	}
 }

@@ -7,13 +7,16 @@ import com.quiz.lesson04.domain.Seller;
 
 @Mapper
 public interface SellerMapper {
-	public void insertSeller(
-			@Param("nickname") String nickname,
+	// 문제 1-1
+	public int insertSeller(
+			@Param("nickname") String nickname, // @Param: Mybatis가 제공하는 어노테이션.
 			@Param("profileImageUrl") String profileImageUrl,
 			@Param("temperature") Double temperature); 
 	
-	public Seller selectSeller();
+	// 문제 1-2
+	public Seller selectLatestSeller();
 	
+	// 문제 1-3
 	public Seller selectSellerById(int id);
 
 }
