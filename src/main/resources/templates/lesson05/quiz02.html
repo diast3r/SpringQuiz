@@ -26,7 +26,6 @@
 				</tr>
 			</tbody>
 		</table>
-		<br><br>
 		
 		<h1>멤버십</h1>
 		<table class="table text-center">
@@ -39,11 +38,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>이름</td>
-					<td>전화번호</td>
-					<td>등급</td>
-					<td>포인트</td>
+				<tr th:each="member : ${membership}">
+					<td th:text="${member.name}">이름</td>
+					<td th:text="${member.phoneNumber}">전화번호</td>
+					<th:block th:switch="${member.grade}">
+						<td th:case="'VIP'" class="text-danger">VIP</td>
+						<td th:case="'GOLD'" class="text-warning">GOLD</td>
+						<td th:case="*" >BASIC</td>
+					</th:block>
+					<td th:if="${member.point >= 5000}" class="text-primary" th:text="${member.point}">포인트</td>
+					<td th:unless="${member.point >= 5000}" th:text="${member.point}">포인트</td>
 				</tr>
 			</tbody>
 			
