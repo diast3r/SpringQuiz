@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+#wrap {
+	width:1200px;
+}
+
+.contents {
+	min-height:500px;
+}
+
+footer {
+	height:100px;
+}
+
+.logo img {
+	width:30px;
+	margin-right:10px;
+}
+
+.weather-history {
+	width:85%;
+}
+
+.logo > a {
+	text-decoration:none;
+}
+
+aside {
+	width:15%;
+	height:auto;
+	font-weight:bold;
+}
+
+.input-label {
+	width:130px;
+	text-align:right;
+	margin-right:10px;
+}
+
+.footer-logo {
+	overflow:hidden;
+	position:relative;
+    width:126px;
+    height:50px;
+}
+
+.footer-logo > img {
+	position:absolute;
+	left:-6px;
+	top:-47px;
+	width:1000px;
+}
+
+
+.copyright {
+	font-size:14px;
+}
