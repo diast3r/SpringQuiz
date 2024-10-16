@@ -1,5 +1,6 @@
 package com.quiz.weather_history;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,14 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.quiz.weather_history.bo.WeatherBO;
-import com.quiz.weather_history.domain.Weather;
+import com.quiz.weather_history.bo.WeatherHistoryBO;
+import com.quiz.weather_history.domain.WeatherHistory;
 
 @Controller
 @RequestMapping("/weather-history")
 public class WeatherHistoryController {
 	@Autowired
-	private WeatherBO weatherBO;
+	private WeatherHistoryBO weatherHistoryBO;
 	
 	@GetMapping("/add-weather-view")
 	public String addWeatherView() {
@@ -30,27 +31,31 @@ public class WeatherHistoryController {
 	@GetMapping("/weather-list-view")
 	public String weatherListView(Model model) {
 		// db select
-		List<Weather> weatherList = weatherBO.getWeather();
+		List<WeatherHistory> weatherHistoryList = weatherHistoryBO.getWeatherHistoryList();
 		
 		// model에 담기
-		model.addAttribute("weatherList", weatherList);
+		model.addAttribute("weatherHistoryList", weatherHistoryList);
 		
 		return "weather_history/weatherList";
 	}
 	
 	@PostMapping("/add-weather")
 	public String addWeather(
-			@RequestParam("date") @DateTimeFormat(iso = ISO.DATE, pattern = "yyyy/MM/dd") LocalDate date,
+			@RequestParam("date") @DateTimeFormat(iso = ISO.DATE, pattern = "yyyy-MM-dd") LocalDate date,
+			// db에 String으로 날짜를 보내도 date형식으로 추가되므로 String형태로 RequestParam을 받아도 된다.
 			@RequestParam("weather") String weather,
 			@RequestParam("microDust") String microDust,
 			@RequestParam("temperatures") double temperatures,
 			@RequestParam("precipitation") double precipitation,
 			@RequestParam("windSpeed") double windSpeed
+			// HttpServletResponse response // 서블릿을 통한 리다이렉트를 하려면 사용할 파라미터.
 			) {
 		// db insert
-		weatherBO.addWeather(date, weather, microDust, temperatures, precipitation, windSpeed);
+		weatherHistoryBO.addWeatherHistory(date, weather, microDust, temperatures, precipitation, windSpeed);
 		
-		
+		// 목록 화면으로 이동
+		// Spring은 servlet 기반이므로 HttpServlet을 사용해서 redirect하는 것도 가능.
+//		response.sendRedirect("/weather-history/weather-list-view");
 		return "redirect:/weather-history/weather-list-view";
 	}
 }

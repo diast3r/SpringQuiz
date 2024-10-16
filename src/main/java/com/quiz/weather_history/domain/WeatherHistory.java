@@ -3,7 +3,7 @@ package com.quiz.weather_history.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Weather {
+public class WeatherHistory {
 	private int id;
 	private LocalDate date;
 	private String weather;

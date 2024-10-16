@@ -6,16 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.quiz.lesson02.bo.StoreBO;
 import com.quiz.lesson05.domain.Member;
 
 @Controller
 @RequestMapping("/lesson05")
 public class Lesson05QuizController {
+	@Autowired
+	private StoreBO storeBO;
 	
 	@GetMapping("/quiz01")
 	public String quiz01() {
@@ -137,4 +142,22 @@ public class Lesson05QuizController {
 		
 		return "lesson05/quiz03";
 	}
+	
+	@GetMapping("/quiz05")
+	public String storeListView(Model model) {
+		model.addAttribute("storeList", storeBO.getStoreList());
+		
+		return "lesson05/quiz05";
+	}
+	
+	@GetMapping("/quiz05/review")
+	public String storeReview(
+			Model model,
+			@RequestParam("storeId") int storeId
+			) {
+		
+		return "redirect:/lesson05/quiz05";
+	}
+	
+	
 }
