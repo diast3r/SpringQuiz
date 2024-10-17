@@ -16,4 +16,20 @@
 		FROM
 			`store`
 	</select>
+	
+	<select id="selectStoreById" parameterType="int" resultType="com.quiz.lesson02.domain.Store">
+		SELECT
+			`id`
+			,`name`
+			,`phoneNumber`
+			,`address`
+			,`businessNumber`
+			,`introduce`
+			,`createdAt`
+			,`updatedAt`
+		FROM
+			`store`
+		WHERE
+			`id` = #{id}
+	</select>
 </mapper>

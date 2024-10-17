@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>배탈의 민족</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    
+    <!-- css -->
+    <link rel="stylesheet" href="/css/store.css" type="text/css">
+</head>
+<body>
+	<div id="wrap" class="">
+		<!-- header 영역 -->
+		<header class="d-flex align-items-center bg-info">
+				<a href="/store/store-list" id="logo">배탈의 민족</a>
+		</header>
+		
+		<!-- section 영역 -->
+		<section class="contents">
+			<div class="display-4 mt-3" th:text="|${store.name} - 리뷰|"></div>
+			<div th:each="review : ${reviewList}" class="content-box d-flex align-items-center">
+				<div>
+					<div class="d-flex mb-1">
+						<div class="user-name" th:text="${review.userName}"></div>
+						<div class="point ml-2" th:with="fill='http://marondal.com/material/images/dulumary/web/jstl/star_fill.png', empty='http://marondal.com/material/images/dulumary/web/jstl/star_empty.png', half='http://marondal.com/material/images/dulumary/web/jstl/star_half.png'">
+							<th:block th:each="number : ${#numbers.sequence(0,4)}">
+								<img th:src="${review.point <= number ? empty : review.point == number + 0.5 ? half : fill}" width="15"></img>
+							</th:block>
+							<!--/* <img th:src="${review.point <= 0 ? empty : review.point == 0.5 ? half : fill}" width="15"></img>
+							<img th:src="${review.point <= 1 ? empty : review.point == 1.5 ? half : fill}" width="15"></img>
+							<img th:src="${review.point <= 2 ? empty : review.point == 2.5 ? half : fill}" width="15"></img>
+							<img th:src="${review.point <= 3 ? empty : review.point == 3.5 ? half : fill}" width="15"></img>
+							<img th:src="${review.point <= 4 ? empty : review.point == 4.5 ? half : fill}" width="15"></img> */-->
+						</div>
+					</div>
+					<div class="date-created mb-3" th:text="${#temporals.format(review.createdAt, 'yyyy년 MM월 dd일')}"></div>
+					<div class="review mb-1" th:text="${review.review}|"></div>
+					<div class="menu" th:text=${review.menu}></div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- footer 영역 -->
+		<footer>
+			<hr>
+			<h3>(주)우와한형제</h3>
+			<div class="text-secondary">고객센터 : <span>1500-1500</span></div>
+		</footer>
+	</div>
+</body>
+</html>
