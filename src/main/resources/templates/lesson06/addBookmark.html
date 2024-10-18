@@ -19,8 +19,12 @@
 		
 		<div class="mt-3">
 			<label for="url">주소</label>
-			<input id="url" type="text" class="form-control">
-		</div>	
+			
+			<div>
+				<input id="url" type="text" class="form-control">
+				<button id="urlCheckBtn" type="button" class="btn btn-info">중복확인</button>
+			</div>
+		</div>
 		<button type="button" id="addBtn" class="mt-3 btn btn-success btn-block">추가</button>
 	</div>
 	
@@ -41,23 +45,35 @@
 					alert("주소를 입력하세요")
 					return;
 				}
-				console.log(name);
-				console.log(url);
+				//console.log(name);
+				//console.log(url);
 				
 				// TODO 주소 체크(http, https로 시작하는지)
-				
+				// http도 '아니고'(and) https도 아닌 경우 => 잘못된 주소
+				if (!url.startsWith("http://") && !url.startsWith("https://")) {
+					alert("주소 형식이 잘못되었습니다");
+					return;
+				}
 				
 				// AJAX 통신
 				$.ajax({
 					// request
 					type:"post"
-					, url:"/lesson06/add-bookmark"
+					, url:"/lesson06/quiz01/add-bookmark"
 					, data:{"name":name, "url":url}
 				
 					// response - callback
-					, success:function(data) { // data의 값은 Controller로부터 String 형태로 넘어올 예정.
-						alert(data);
-						location.href = "http://localhost:8080/lesson06/bookmark-list";
+					, success:function(data) { // AJAX의 응답은 JSON(String임) => jquery가 JSON임을 알고 dictionary로 변환해줌.
+						// 순수 ajax는 JSON String을 그냥 String으로 인식하므로 바로 사용하기 불편함.
+						//alert(data.code);
+						if (data.conde == 200) {
+							// 화면 이동
+							location.href = "/lesson06/quiz01/bookmark-list-view";
+						} else {
+							// 로직 실패
+							alert(data.error_massage); // 에러 원인
+							
+						}
 					}
 					, error:function() {
 						alert("추가하는 데 실패했습니다.");

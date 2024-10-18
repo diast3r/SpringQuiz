@@ -15,16 +15,16 @@
 		<table class="table text-center">
 			<thead>
 				<tr>
-					<th>No.</th>
+					<th>번호</th>
 					<th>이름</th>
 					<th>주소</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="bookmark, status : ${bookmarkList}">
-					<td th:text="${status.count}">번호</td>
+				<tr th:each="bookmark : ${bookmarkList}">
+					<td th:text="${bookmark.id}">번호</td>
 					<td th:text="${bookmark.name}"></td>
-					<td><a th:href="${bookmark.url}" th:text="${bookmark.url}"></a></td>
+					<td><a th:href="${bookmark.url}" th:text="${bookmark.url}" target="_blank"></a></td>
 				</tr>
 			</tbody>
 			
