@@ -21,7 +21,16 @@ public class BookmarkBO {
 		bookmarkMapper.insertBookmark(name, url);
 	}
 	
-	public int deleteBookmarkById(int id) {
-		return bookmarkMapper.deleteBookmarkById(id);
+	public boolean deleteBookmarkById(int id) {
+		return bookmarkMapper.deleteBookmarkById(id) == 1;
+	}
+	
+	// output: boolean
+	public boolean isDuplicatedUrl(String url) {
+		List<Bookmark> bookmarkList = bookmarkMapper.selectBookmarkByUrl(url);
+		// List의 경우 mapper에서 select의 결과가 0행이면 null이 아니라 비어있는 리스트를 반환함.
+		
+		// 비어있으면 중복이 아니므로, empty true => false
+		return bookmarkList.isEmpty() == false;
 	}
 }

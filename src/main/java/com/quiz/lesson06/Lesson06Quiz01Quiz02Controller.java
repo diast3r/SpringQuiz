@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,7 @@ public class Lesson06Quiz01Quiz02Controller {
 		// 성공 여부 JSON String
 		// "{"code":200, "result":"성공"}"
 		Map<String, Object> result = new HashMap<>();
-		result.put("conde", 200);
+		result.put("code", 200);
 		result.put("result",  "성공");
 		// 아무 사이트 들어가서 페이지 로드할 때 네트워크 응답값에서 json으로 된 것들 살펴보기.
 		return result;
@@ -55,19 +56,41 @@ public class Lesson06Quiz01Quiz02Controller {
 	
 	
 	// quiz 02
-	@PostMapping("/delete-bookmark")
+	// id로 삭제 - AJAX 요청
+	@DeleteMapping("/delete-bookmark") // delete쿼리를 수행할 함수에 쓰는 어노테이션. post계열 메소드 중 하나.
 	@ResponseBody
 	public Map<String, Object> deleteBookmark(@RequestParam("id") int id) {
 		
 		Map<String, Object> result = new HashMap<>();
-		if (bookmarkBO.deleteBookmarkById(id) == 1) {
+		if (bookmarkBO.deleteBookmarkById(id)) {
 			result.put("code", 200);
-			result.put("isDeletedProperly",  true);
+			result.put("result",  "성공");
 			return result;
 		} else {
 			result.put("code", 500); // 삭제 실패 코드 대충 500으로 정함.
-			result.put("isDeletedProperly",  false);
+			result.put("error_message",  "삭제 실패 이유");
 			return result;
 		}
+	}
+	
+	@PostMapping("/is-duplicated-url")
+	@ResponseBody
+	public Map<String, Object> isDuplicatedUrl(
+			@RequestParam("url") String url) {
+		
+		// db select 
+		boolean isDuplicated = false;
+		if (bookmarkBO.isDuplicatedUrl(url)) {
+			isDuplicated = true;
+		}
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		if (isDuplicated) {
+			result.put("is_duplicated", true);
+		} else {
+			result.put("is_duplicated", false);
+		}
+		return result;
 	}
 }

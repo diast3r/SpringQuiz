@@ -1,0 +1,66 @@
+#wrap {
+    min-width:1100px;
+    width:1200px;
+    margin:0 auto;
+}
+
+header {
+    height:100px;
+}
+
+.contents {
+    color:#fff;
+}
+
+.contents nav {
+    height:50px;
+    background-color:darkorange;
+}
+
+.nav-item {
+    font-size:20px;
+}
+
+
+.module-box {
+    background-color:orangered;
+    height:320px;
+}
+
+.module-box .check-module {
+    background-color:chocolate;
+    font-size:20px;
+}
+
+footer #info {
+    color: #aaa;
+    font-size:14px;
+}
+
+#wrap a {
+    color:#fff;
+    text-decoration: none;
+}
+
+
+#nonMemberInput .check-module-input {
+    margin: 10px 0;
+}
+
+#memberInput .check-module-input {
+    margin:20px 0;
+}
+
+/* .module-box .reserve-module, .module-box .check-module, .module-box .call-module {
+    width:400px;
+} */
+
+.check-module-header {
+    height:70px;
+}
+
+
+.call-module div {
+    font-size:50px;
+    font-weight:600;
+}

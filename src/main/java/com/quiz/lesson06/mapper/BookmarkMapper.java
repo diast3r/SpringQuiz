@@ -17,4 +17,6 @@ public interface BookmarkMapper {
 			);
 	
 	public int deleteBookmarkById(int id);
+	
+	public List<Bookmark> selectBookmarkByUrl(String url);
 }

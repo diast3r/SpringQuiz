@@ -21,14 +21,78 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="bookmark : ${bookmarkList}">
-					<td th:text="${bookmark.id}">번호</td>
-					<td th:text="${bookmark.name}"></td>
-					<td><a th:href="${bookmark.url}" th:text="${bookmark.url}" target="_blank"></a></td>
+				<tr th:id="${bookmark.id}" th:each="bookmark : ${bookmarkList}">
+					<td th:text="${bookmark.id}" class="align-middle">번호</td>
+					<td th:text="${bookmark.name}" class="align-middle"></td>
+					<td><a th:href="${bookmark.url}" th:text="${bookmark.url}" target="_blank" class="align-middle"></a></td>
+					<td>
+						<!--/* 버튼 th:value에 값 넣기 */-->	
+						<!--/* <button type="button" class="btn btn-danger align-middle del-btn" value="${bookmark.id}">삭제</button> */-->
+						
+						<!--/* 2) data attribute로 값 넣기 */-->
+						<!--/* data-내가-원하는-data-이름 -->
+						<!--/* 여러 값을 넣을 수 있다는 장점. 대문자 사용 불가. */-->
+						<button type="button" class="btn btn-danger align-middle del-btn" th:data-bookmark-id="${bookmark.id}">삭제</button>
+						
+						
+						<!--/* <input th:onclick="|deleteBookmark(${bookmark.id})|" type="button" class="btn btn-danger align-middle" value="삭제"> */-->
+					</td>
 				</tr>
 			</tbody>
 			
 		</table>
+		
+		<script>
+			/* function deleteBookmark(id) {
+				$.ajax({
+					method:"delete"
+					, url:"/lesson06/quiz01/delete-bookmark"
+					, data:{"id":id}
+					, success: function(data) {
+						if (data.code == 200 && data.isDeletedProperly) {
+							location.reload();
+						}
+					}
+					,error: function() {
+						alert("실패");
+					}
+				});
+			} */
+			$(document).ready(function() {
+				$(".del-btn").on("click", function(e) {
+					// 1) value를 이용
+					// let id = $(this).val();
+					// let id = $(this).attr("value"); 
+					// let id = e.target.value; // 파라미터 e 필요함.
+					
+					// 2) data를 이용(여러 항목 추가 가능)
+					// 태그 th:data-bookmark-id
+					// js : .data("bookmark-id")
+					let id = $(this).data("bookmark-id");
+					
+					$.ajax({
+						// request
+						type:"delete"
+						, url:"/lesson06/quiz01/delete-bookmark"
+						, data:{"id":id}
+						, success:function(data) {
+							// result
+							if (data.result == "성공") {
+								// 새로고침 (스크롤 유지, 데이터 다시 get)
+								location.reload(true);
+								alert("삭제 완료");
+							} else if (data.code == 500) {
+								alert(data.error_message);
+							}
+						}
+						, error:function(e) {
+							alert("삭제하는데 실패했습니다.");
+						}
+					});
+				});
+				
+			});
+		</script>
 	</div>
 </body>
 </html>
