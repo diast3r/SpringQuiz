@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+	<title>통나무 펜션</title>
+	<meta charset="utf-8">
+	<!-- jquery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+	<!-- datepicker -->
+	<!-- jquery import하는 구문보다 아래에 있어야 함. jquery가 slim 버전이면 안 됨. -->
+	<script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+
+	<!-- 사용자 스타일시트 -->
+	<link rel="stylesheet" th:href="@{/css/booking.css}" type="text/css">
+</head>
+<body>
+	<div id="wrap">
+		<!-- 헤더 영역 -->
+		<header class="d-flex justify-content-center align-items-center">
+			<h1 class="display-4">통나무 펜션</h1>
+		</header>
+
+		<!-- 섹션 영역 -->
+		<section class="contents bg-warning">
+			<nav class="d-flex align-items-center font-weight-bold">
+				<ul class="nav nav-fill w-100">
+					<li class="nav-item"><a href="/lesson06/booking/check-booking-view" class="nav-link">펜션소개</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">객실보기</a></li>
+					<li class="nav-item"><a href="/lesson06/booking/make-booking-view" class="nav-link">예약하기</a></li>
+					<li class="nav-item"><a href="/lesson06/booking/booking-list-view" class="nav-link">예약목록</a></li>
+				</ul>
+			</nav>
+
+		</section>
+		<!--/* nav 아래 영역 */-->
+		<section>
+			<h1 class="font-weight-bold mt-5 text-center">예약하기</h1>
+			
+			<div class="booking-form">
+				<div class="booking-form-input mt-3">
+					<span>이름</span>
+					<input id="name" type="text" class="form-control">
+				</div>
+				<div class="booking-form-input mt-3">
+					<span>예약날짜</span>
+					<input id="date" type="text" class="form-control">
+				</div>
+				<div class="booking-form-input mt-3">
+					<span>숙박일수</span>
+					<input id="day" type="text" class="form-control">
+				</div>
+				<div class="booking-form-input mt-3">
+					<span>숙박인원</span>
+					<input id="headcount" type="text" class="form-control">
+				</div>
+				<div class="booking-form-input mt-3">
+					<span>전화번호</span>
+					<input id="phoneNumber" type="text" class="form-control">
+				</div>
+				<button id="makeBookingBtn" type="button" class="mt-3 form-control btn btn-warning">예약하기</button>
+			</div>
+			
+		</section>
+		<!-- footer 영역 -->
+		<footer class="bg-light">
+			<div id="info" class=" pt-2 pl-4">
+				<div>제주특별자치도 제주시 애월읍</div>
+				<div>사업자등록번호: 111-22-255222 / 농어촌 민박사업자지정 / 대표:김통목</div>
+				<div>
+					Copyright <span class="year-text">2019</span> tongnamu. All right
+					reserved.
+				</div>
+			</div>
+		</footer>
+	</div>
+	<script>
+		$(document).ready(function() {
+			$("#date").datepicker({
+				minDate:"+1d"
+				, dateFormat:"yy-mm-dd"
+			});
+			
+			$("#makeBookingBtn").on("click", function() {
+				let name = $("#name").val().trim();
+				let date = $("#date").val().trim();
+				let day = $("#day").val().trim();
+				let headcount = $("#headcount").val().trim();
+				let phoneNumber = $("#phoneNumber").val().trim();
+				console.log(day);
+				
+				// validation check
+				
+				// 이름 유효성 검사
+				if (!name) {
+					alert("이름을 입력하세요");
+					return;
+				}
+				
+				// TODO 이름 형식 검사
+				if (name.length > 10) {
+					alert("이름은 10자 이내로 입력하세요");
+					return;
+				}
+				
+				// 날짜 유효성 검사
+				if (!date) {
+					alert("날짜를 선택하세요");
+					return;
+				}
+				
+				// 날짜 형식 검사
+				if (checkValidDate(date) == false) {
+					alert("날짜를 정확히 입력하세요");
+					return;
+				}
+				
+				// 숙박일수 검사
+				if (!day) {
+					alert("숙박일수를 입력하세요");
+					return;
+				}
+				
+				// 숙박일수 형식 검사
+				if (!Number.isInteger(+day)) {
+					alert("숙박일수를 정확히 입력하세요");
+					return;
+				}
+				
+				if (day > 14) {
+					alert("숙박일수는 최대 14일입니다");
+					return;
+				}
+				
+				// 숙박인원 검사
+				if (!headcount) {
+					alert("숙박인원을 입력하세요");
+					return;
+				}
+				
+				// 숙박인원 형식 검사
+				if (!Number.isInteger(+headcount)) {
+					alert("숙박인원을 정확히 입력하세요");
+					return;
+				}
+				
+				if (headcount > 10) {
+					alert("숙박인원은 최대 10명입니다");
+					return;
+				}
+				
+				// 전화번호 유효성 검사
+				if (!phoneNumber) {
+					alert("전화번호를 입력하세요");
+					return;
+				}
+				
+				// 전화번호 형식 검사
+				if (!telValidChk(phoneNumber)) {
+					alert("전화번호를 정확히 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					// request
+					type:"post"
+					, url:"/lesson06/booking/make-booking"
+					, data:{"name":name, "date":date, "day":day, "headcount":headcount, "phoneNumber":phoneNumber}
+					
+					// response
+					// {"code":200, "result":"성공"}
+					, success:function(data) {
+						if (data.code == "성공") {
+							location.href = "/lesson06/booking/booking-list-view";
+						} // 예외처리 생략
+					}
+					, error:function() {
+						alert("예약하는 데 실패했습니다.");
+					}
+				});
+				
+			});
+		});
+		
+		// 날짜 유효성 검사 함수
+		// 코드 출처:https://hoony-devblog.tistory.com/15
+		function checkValidDate(value) {
+			var result = true;
+			try {
+			    var date = value.split("-");
+			    var y = parseInt(date[0], 10),
+			        m = parseInt(date[1], 10),
+			        d = parseInt(date[2], 10);
+			    
+			    var dateRegex = /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
+			    result = dateRegex.test(d+'-'+m+'-'+y);
+			} catch (err) {
+				result = false;
+			}    
+		    return result;
+		}
+		
+		<!--/*
+			-(하이픈)을 기준으로 첫번째 구간이 01[0,1,6,7,8,9](핸드폰), 02(집), 030~099(지역) 중 하나인지 체크
+			-(하이픈)을 기준으로 두번째 구간이 숫자 3~4 자리로 이루어져 있는지 체크
+			-(하이픈)을 기준으로 세번째 구간이 숫자 4자리로 이루어져 있는지 체크
+		*/-->
+		// 전화번호 유효성 검사 함수
+		// 코드 출처:https://taedonn.tistory.com/17
+		// pattern 선언 위치와 이하 코드를 컨벤션 맞춰 수정함
+		function telValidChk(tel) {
+			const pattern = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+			if(pattern.test(tel) === false) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	</script>
+</body>
+</html>

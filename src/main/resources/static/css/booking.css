@@ -59,8 +59,12 @@ footer #info {
     height:70px;
 }
 
-
 .call-module div {
     font-size:50px;
     font-weight:600;
+}
+
+.booking-form {
+	margin: 0 auto;
+	width: 35%;
 }

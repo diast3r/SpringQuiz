@@ -2,16 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
 <meta charset="utf-8">
-<title>통나무 펜션</title>
-<!-- bootstrap -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-	crossorigin="anonymous"></script>
+<title>예약 목록</title>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+	
+	<!-- 사용자 스타일시트 -->
 	<link rel="stylesheet" th:href="@{/css/booking.css}" type="text/css">
 </head>
 <body>
@@ -25,20 +22,17 @@
 		<section class="contents bg-warning">
 			<nav class="d-flex align-items-center font-weight-bold">
 				<ul class="nav nav-fill w-100">
-					<li class="nav-item"><a href="/booking/check-booking-view"
-						class="nav-link">펜션소개</a></li>
+					<li class="nav-item"><a href="/lesson06/booking/check-booking-view" class="nav-link">펜션소개</a></li>
 					<li class="nav-item"><a href="#" class="nav-link">객실보기</a></li>
-					<li class="nav-item"><a href="/booking/make-booking-view"
-						class="nav-link">예약하기</a></li>
-					<li class="nav-item"><a href="/booking/booking-list-view"
-						class="nav-link">예약목록</a></li>
+					<li class="nav-item"><a href="/lesson06/booking/make-booking-view" class="nav-link">예약하기</a></li>
+					<li class="nav-item"><a href="/lesson06/booking/booking-list-view" class="nav-link">예약목록</a></li>
 				</ul>
 			</nav>
 
 		</section>
-		<!--/* nav 아래 영역 */-->
+		<!-- nav 아래 영역 -->
 		<section>
-			<h1>예약 목록</h1>
+			<h1 class="font-weight-bold mt-5 text-center">예약 목록 보기</h1>
 			<table class="table text-center">
 				<thead>
 					<tr>
@@ -52,15 +46,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="booking : ${bookingList}">
+					<tr th:each="booking : ${bookingList}" th:with="state=${booking.state}">
 						<td th:text="${booking.name}" class="align-middle"></td>
-						<td th:text="${booking.date}" class="align-middle"></td>
+						<td th:text="${#temporals.format(booking.date, 'yyyy년 M월 d일')}" class="align-middle"></td>
 						<td th:text="${booking.day}" class="align-middle"></td>
 						<td th:text="${booking.headcount}" class="align-middle"></td>
 						<td th:text="${booking.phoneNumber}" class="align-middle"></td>
-						<td th:text="${booking.state}" class="align-middle"></td>
-						<td>
-							<button class="btn btn-danger del-btn" th:data-booking-id="${booking.id}">삭제</button>
+						<td th:text="${booking.state}" th:class="'align-middle ' + ${state == '확정' ? 'text-success' : state == '대기중' ? 'text-primary' : state == '취소' ? 'text-danger' : ''}"></td>
+						<td> <!--/* post 메소드로 요청할 것이므로 a 태그는 사용 불가. */-->
+							<button type="button" class="btn btn-danger del-btn" th:data-booking-id="${booking.id}">삭제</button>
 						</td>
 					</tr>
 				</tbody>
@@ -80,17 +74,29 @@
 	</div>
 	<script>
 		$(document).ready(function() {
+			// 삭제
 			$(".del-btn").on("click", function() {
-				let bookingId = $(this).data("booking-id");
+				let id = $(this).data("booking-id");
 				$.ajax({
-					method:"post"
-					,data:{"bookingId":bookingId}
-					,url:"/lesson06/booking/deleteBooking"
+					// request
+					type:"delete"
+					,data:{"id":id}
+					,url:"/lesson06/booking/delete-booking"
+					
+					// response - callback
 					,success:function(data) {
-						alert(data.code);
+						if (data.result == "성공") {
+							// 새로고침
+							location.reload(true); // true 생략 가능
+						} else if (data.code == 512) { // 코드번호가 여러 가지일 수도 있으므로 else if 로 작성하는 것이 좋음. */-->
+							alert(data.error_message);
+						}
+						// alert(data.code);
+						
 					}
 					,error:function(e) {
-						
+						// 이 에러 메시지는 위의 success에서의 분기문과는 다른 메시지를 출력하는 것이 에러를 구분하는 데 도움이 된다.
+						alert("삭제하는데 실패했습니다.");
 					}
 				});
 			});
