@@ -225,13 +225,13 @@
                 	, data:{"name":name, "phoneNumber":phoneNumber}
                 	, success:function(data) {
                 		// alert(data.code);
-                		if (data.code == 200) {
-	                		alert("이름: " + data.bookingData.name + "\n" +
-	                				"날짜: " + data.bookingData.date + "\n" +
-	                				"일수: " + data.bookingData.day + "\n" +
-	                				"인원: " + data.bookingData.headcount + "\n" +
-	                				"전화번호: " + data.bookingData.phoneNumber + "\n");
-                		} else if (data.code == 500) {
+                		if (data.code == 200) { // 예약 내역 있음
+	                		alert("이름: " + data.result.name + "\n" +
+	                				"날짜: " + data.result.date + "\n" +
+	                				"일수: " + data.result.day + "\n" +
+	                				"인원: " + data.result.headcount + "\n" +
+	                				"상태: " + data.result.state + "\n");
+                		} else if (data.code == 500) { // 예약 내역 없음
                 			alert(data.error_message);
                 		}
                 	}

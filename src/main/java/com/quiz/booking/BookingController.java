@@ -67,12 +67,13 @@ public class BookingController {
 			@RequestParam("phoneNumber") String phoneNumber) {
 		
 		Booking booking = bookingBO.getLatestBookingByNamePhoneNumber(name, phoneNumber);
+		// {"code":200, "result":booking}
+		// => {"code":200, "result":{"id":3, "name":"양준호", ...}
+		
 		Map<String, Object> result = new HashMap<>();
-
 		if (booking != null) {
 			result.put("code", 200);
-			result.put("result", "성공");
-			result.put("bookingData", booking); // db select
+			result.put("result", booking);
 		} else {
 			result.put("code", 500);
 			result.put("error_message", "조회 결과가 없습니다.");
@@ -103,8 +104,8 @@ public class BookingController {
 		
 		// 응답 json
 		Map<String, Object> result = new HashMap<>();
-		result.put("code", "성공");
-		result.put("code", "성공");
+		result.put("code", 200);
+		result.put("result", "성공");
 		return result;
 	}
 	
