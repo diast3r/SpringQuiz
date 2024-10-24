@@ -23,4 +23,20 @@ public class Lesson07Quiz01RestController {
 	public CompanyEntity save2() {
 		return companyBO.addCompany("버블팡", "여신 금융업", "대기업", 6834);
 	}
+	
+	// localhost/lesson07/quiz01/update
+	@GetMapping("/update")
+	public CompanyEntity update() {
+		// id가 8번인 "버블팡" 회사의 규모를 중소기업, 사원수를 34명으로 업데이트
+		return companyBO.updateCompanyScaleHeadCountById(8, "중소기업", 34);
+	}
+	
+	// localhost/lesson07/quiz01/delete
+	@GetMapping("/delete")
+	public String delete() {
+		// id 8인 회사 삭제
+		companyBO.deleteCompanyById(8);
+		
+		return "삭제 완료";
+	}
 }
